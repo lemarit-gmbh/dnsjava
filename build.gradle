@@ -33,7 +33,7 @@ task writePom {
                     }
                 }
             }
-        }.writeTo("$buildDir/libs/pom.xml")
+        }.writeTo("$buildDir/libs/$rootProject.name-${version}.pom")
     }
 }
 
