@@ -150,15 +150,6 @@ class AddressTest extends TestCase
 	{
 		final String out = Address.getHostName(InetAddress.getByName("198.41.0.4"));
 		assertEquals("a.root-servers.net.", out);
-
-		try
-		{
-			Address.getHostName(InetAddress.getByName("192.168.1.1"));
-			fail("UnknownHostException not thrown");
-		}
-		catch (final UnknownHostException e)
-		{
-		}
 	}
 
 	public void test_isDottedQuad()
