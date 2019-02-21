@@ -1,19 +1,54 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
+plugins {
+	id "java"
+	id "eclipse"
+	id "maven"
+	id "maven-publish"
+	id "com.jfrog.artifactory" version "4.9.3"
+}
 
-group = "com.lemarit.dnsjava"
+group   = "com.lemarit"
 version = "2.1.9"
 
 targetCompatibility = 1.8
 sourceCompatibility = 1.8
 
 repositories {
-  mavenCentral()
-  jcenter()
+	mavenCentral()
+	jcenter()
 }
 
 dependencies {
-  testCompile 'junit:junit:4.12'
-  testCompile 'org.assertj:assertj-core:3.9.1'
-  testCompile 'org.mockito:mockito-core:2.16.0'
+	testCompile 'junit:junit:4.12'
+}
+
+task writePom {
+    doLast {
+        pom {
+            project {
+                licenses {
+                    license {
+                        name 'BSD 2-Clause license'
+                        url 'http://opensource.org/licenses/BSD-2-Clause'
+                        distribution 'repo'
+                    }
+                }
+            }
+        }.writeTo("$buildDir/libs/pom.xml")
+    }
+}
+
+build.dependsOn writePom
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
 }
